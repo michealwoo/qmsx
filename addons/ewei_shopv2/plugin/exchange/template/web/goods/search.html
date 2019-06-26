@@ -1,0 +1,30 @@
+{template '_header'}
+<div class="page-content" style="display: block;">
+    <div class="page-heading">
+        {ifp 'exchange.goods.setting'}
+    <span class="pull-right">
+            <a class="btn btn-primary btn-sm" href="{php echo webUrl('exchange/goods/setting',array('id'=>0));}"><i class="fa fa-plus"></i> 添加商品兑换任务</a>
+        </span>
+        {/if}
+        <h2>商品兑换组
+            <!--<small>数量: <span class="text-danger">0</span> 条</small>-->
+        </h2>
+    </div>
+
+    <ul class="nav nav-arrow-next nav-tabs" id="myTab">
+        <li {if $_W['action'] == 'goods'}class="active"{/if}>
+        <a href="{php echo webUrl('exchange/goods')}">进行中 (<span class="goods-ing">{$allStart}</span>)</a>
+        </li>
+        <li {if $_W['action'] == 'goods.nostart'}class="active"{/if}>
+        <a href="{php echo webUrl('exchange/goods/nostart')}">未开始 (<span class="goods-ing">{$allNostart}</span>)</a>
+        </li>
+        <li {if $_W['action'] == 'goods.end'}class="active"{/if}>
+        <a href="{php echo webUrl('exchange/goods/end')}">已结束 (<span class="goods-sold">{$allEnd}</span>)</a>
+        </li>
+        <li {if $_W['action'] == 'goods.search'}class="active"{/if}>
+        <a>搜索结果 (<span class="goods-sold">{php echo count($list);}</span>)</a>
+        </li>
+    </ul>
+
+    <div class="page-toolbar row m-b-sm m-t-sm">
+        <div class="col-sm-

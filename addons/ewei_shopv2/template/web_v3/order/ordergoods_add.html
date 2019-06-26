@@ -1,0 +1,40 @@
+
+<style type='text/css'>
+    .select-group {height: 28px;padding-top:2px;}
+</style>
+<form class="form-horizontal form-validate" action="{php echo webUrl('order/detail/ordergoods_add')}" method="post" enctype="multipart/form-data">
+	<input type='hidden' name='id' value='{$id}' />
+	<div class="modal-dialog">
+           <div class="modal-content">
+            <div class="modal-header">
+                <button data-dismiss="modal" class="close" type="button">×</button>
+                <h4 class="modal-title">添加商品</h4>
+            </div>
+
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">选择商品:</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <select class="form-control" name="goodsid" id="goodsid">
+                            {loop $goods_list $value}
+                            <option value="{$value['goodsid']}">{$value['title']}</option>
+                            {/loop}
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">数量:</label>
+                    <div class="col-sm-3 col-xs-6">
+                        <input type="text" name="goods_num" class="form-control" value="" data-rule-required='true' />
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-primary" type="submit">保存</button>
+                <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+            </div>
+        </div>
+        </div>
+</form>
+<!--6Z2S5bKb5piT6IGU5LqS5Yqo572R57uc56eR5oqA5pyJ6ZmQ5YWs5Y+4-->

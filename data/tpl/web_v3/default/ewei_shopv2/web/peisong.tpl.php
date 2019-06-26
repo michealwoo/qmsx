@@ -1,0 +1,142 @@
+<?php defined('IN_IA') or exit('Access Denied');?><?php (!empty($this) && $this instanceof WeModuleSite || 1) ? (include $this->template('_header', TEMPLATE_INCLUDEPATH)) : (include template('_header', TEMPLATE_INCLUDEPATH));?>
+<style>    
+.popover{        
+	width:170px;        
+	font-size:12px;        
+	line-height: 21px;        
+	color: #0d0706;    
+}    
+.popover span{
+	color: #b9b9b9;   
+}
+.nickname{        
+	display: inline-block;        
+	max-width:200px;        
+	overflow: hidden;        
+	text-overflow:ellipsis;        
+	white-space: nowrap;        
+	vertical-align: middle;    
+}
+.tooltip-inner{        
+	border:none;    
+}
+</style>
+<div class="page-header">当前位置：<span class="text-primary">配送员列表</span></div>
+<div class="page-content">    
+<div class="fixed-header">        
+<div style="width:25px;"></div>        
+<div style="width:150px;">姓名</div>        
+<div class="flex1">关联账号</div>   
+<div style="width:250px;">OPENID</div>
+<div class="flex1">手机</div> 
+<div class="flex1">配送范围</div>        
+<div class="flex1">工作状态</div>        
+<div style="width: 125px;text-align: center;">操作</div>    
+</div>    
+<form action="./index.php" method="get" class="form-horizontal table-search" role="form">        
+	<input type="hidden" name="c" value="site"/>        
+	<input type="hidden" name="a" value="entry"/>        
+	<input type="hidden" name="m" value="ewei_shopv2"/>        
+	<input type="hidden" name="do" value="web"/>        
+	<input type="hidden" name="r" value="peisong"/>                
+	<div class="page-toolbar">            
+		<span class="pull-left" style="margin-right:50px;">                
+		   <a class="btn btn-sm btn-primary" href="http://rrshop.vrccn.com/web/index.php?c=site&amp;a=entry&amp;m=ewei_shopv2&amp;do=web&amp;r=peisong.add"><i class="fa fa-plus"></i>  添加</a>            
+		</span>            
+			<div class="input-group col-sm-6 pull-right">                
+				<input type="text" class="form-control " name="title" value="<?php  echo $_GPC['title'];?>" placeholder="可搜姓名/手机号">                
+				<span class="input-group-btn">                    
+					<button class="btn btn-primary" type="submit"> 搜索</button>                    
+					<button type="submit" name="export" value="1" class="btn btn-success ">导出</button>
+				</span>            
+			</div>        
+	</div>    
+</form>    
+<?php  if(empty($list)) { ?>        
+<div class="panel panel-default">            
+  <div class="panel-body empty-data">未查询到相关数据</div>        
+</div>    
+<?php  } else { ?>        
+<div class="row">            
+<div class="col-md-12">                
+	<div class="page-table-header">                    
+	<input type="checkbox">                    
+	<div class="btn-group">                        
+	<?php if(cv('peisong.delete')) { ?>                        
+	<button class="btn btn-default btn-sm btn-operation" type="button" data-toggle='batch-remove' data-confirm="确认要删除?" data-href="<?php  echo webUrl('peisong/delete')?>">
+	<i class="icow icow-shanchu1"></i> 批量删除
+	</button>
+	<?php  } ?>
+	</div>                
+	</div>                
+	<table class="table table-responsive">                    
+	<thead>                    
+	<tr>                        
+	<th style="width:25px;"></th>                        
+	<th style="width:150px;">姓名</th>
+	<th style="">关联账号</th>
+	<th style="width:250px;">OPENID</th>
+	<th style="">手机</th>                   
+	<th style="">配送范围</th>                        
+	<th style="">工作状态</th>                        
+	<th style="width: 125px;text-align: center;">操作</th>                    
+	</tr>                    
+	</thead>                    
+		<tbody>                        
+		<?php  if(is_array($list)) { foreach($list as $row) { ?>                        
+		<tr>                            
+		<td style="position: relative; "><input type='checkbox' value="<?php  echo $row['id'];?>" class="checkone"/></td>                
+		<td style="overflow: visible">                                
+			<span><?php  echo $row['name'];?></span>                           
+		</td>                            
+		<td>                                
+			<span><?php  echo $row['nickname']?></span>                          
+		</td> 
+		<td>                                
+			<span><?php  echo $row['openid']?></span>                          
+		</td>
+		<td>                                
+			<span><?php  echo $row['phone']?></span>                          
+		</td>  
+		<td><span><?php  echo $row['delivery_range']?></span></td>                         
+		<td>
+			<span><span style="color: #5097d3"><?php  echo format_workstate($row['workstate'])?></span></span>
+		</td>
+			<td style="overflow:visible;text-align: center;">                                
+				<div class="btn-group">                                        
+					<a class="btn  btn-op btn-operation" href="<?php  echo webUrl('peisong/edit',array('id' => $row['id']));?>" title="">             
+					<span data-toggle="tooltip" data-placement="top" title="" data-original-title="修改">
+							<i class='icow icow-bianji2'></i>                                            
+					</span>
+					</a>
+					<a class="btn btn-op btn-operation" data-toggle='ajaxRemove' href="<?php  echo webUrl('peisong/delete',array('id' => $row['id']));?>" data-confirm="确定要删除吗？">
+					<span data-toggle="tooltip" data-placement="top" title="" data-original-title="删除"><i class='icow icow-shanchu1'></i>
+					</span>                                        
+					</a>                             
+				</div>                            
+			</td>                        
+		</tr>                        
+		<?php  } } ?>                    
+		</tbody>                    
+		<tfoot>                    
+			<tr>                        
+				<td><input type="checkbox"></td>                        
+				<td colspan="4">                            
+					<div class="btn-group">                                
+					<?php if(cv('peisong.delete')) { ?>
+						<button class="btn btn-default btn-sm btn-operation" type="button" data-toggle='batch-remove' data-confirm="确认要删除?" data-href="<?php  echo webUrl('peisong/delete')?>"><i class="icow icow-shanchu1"></i> 批量删除                                
+						</button>                                
+					<?php  } ?>                                                        
+					</div>                        
+				</td>                        
+				<td colspan="3" style="text-align: right"><?php  echo $pager;?>                        
+				</td>                    
+			</tr>                    
+		</tfoot>                
+	</table>            
+	</div>        
+</div>   
+<?php  } ?>
+</div>
+
+<?php (!empty($this) && $this instanceof WeModuleSite || 1) ? (include $this->template('_footer', TEMPLATE_INCLUDEPATH)) : (include template('_footer', TEMPLATE_INCLUDEPATH));?>

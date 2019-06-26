@@ -1,0 +1,21 @@
+	</div>
+	<div class="container-fluid footer text-center" role="footer">	
+		<span class="friend-link">
+			{if empty($_W['setting']['copyright']['footerright'])}
+				<a href=http://www.souho.net target=_blank>搜虎精品社区</a>&nbsp;&nbsp;<a href=http://vip.souho.net target=_blank>极品商业源码</a>&nbsp;&nbsp;<a href=http://idc.souho.net target=_blank>搜虎精品社区空间、域名</a>&nbsp;&nbsp;<a href=http://vip.souho.net/templates/Korea/ target=_blank>90G韩国豪华商业模版</a>&nbsp;&nbsp;<a href=http://www.souho.net/forum-158-1.html target=_blank>顶级棋牌商业源码</a>
+			{else}
+				{$_W['setting']['copyright']['footerright']}
+			{/if}
+		</span>
+		<span>{if empty($_W['setting']['copyright']['footerleft'])}				<a href=http://www.souho.net target=_blank>搜虎精品社区</a>&nbsp;&nbsp;<a href=http://vip.souho.net target=_blank>极品商业源码</a>&nbsp;&nbsp;<a href=http://idc.souho.net target=_blank>搜虎精品社区空间、域名</a>&nbsp;&nbsp;<a href=http://vip.souho.net/templates/Korea/ target=_blank>90G韩国豪华商业模版</a>&nbsp;&nbsp;<a href=http://www.souho.net/forum-158-1.html target=_blank>顶级棋牌商业源码</a>
+{else}{$_W['setting']['copyright']['footerleft']}{/if}</span>
+	</div>
+	{if !empty($_W['setting']['copyright']['statcode'])}{$_W['setting']['copyright']['statcode']}{/if}
+	{if !empty($_GPC['m']) && !in_array($_GPC['m'], array('keyword', 'special', 'welcome', 'default', 'userapi')) || defined('IN_MODULE')}
+	<script>
+		if(typeof $.fn.tooltip != 'function' || typeof $.fn.tab != 'function' || typeof $.fn.modal != 'function' || typeof $.fn.dropdown != 'function') {
+			require(['bootstrap']);
+		}
+	</script>
+	{/if}
+</div>

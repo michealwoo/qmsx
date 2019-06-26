@@ -1,0 +1,248 @@
+{template '_header'}
+<style>    
+.popover{        
+	width:170px;        
+	font-size:12px;        
+	line-height: 21px;        
+	color: #0d0706;    
+}    
+.popover span{        
+	color: #b9b9b9;   
+}    
+.nickname{        
+	display: inline-block;        
+	max-width:200px;        
+	overflow: hidden;        
+	text-overflow:ellipsis;        
+	white-space: nowrap;        
+	vertical-align: middle;    
+}
+.tooltip-inner{        
+	border:none;    
+}
+</style>
+<div class="page-header">当前位置：<span class="text-primary">商品价格查询列表</span></div>
+<div class="page-content">    
+<div class="fixed-header"> 
+	<!-- <div style="width:25px;"></div>   -->      
+	<div class="flex1">商品名称</div>
+	<div class="flex1">商品现价</div>
+	<div class="flex1">商品状态</div>
+	<div class="flex1">创建时间</div>   
+	<!-- <div class="flex1">修改时间</div>   -->          
+	<div style="width: 125px;text-align: center;">操作</div>    
+</div>    
+<form action="./index.php" method="get" class="form-horizontal table-search" role="form">
+	<input type="hidden" name="c" value="site"/>
+	<input type="hidden" name="a" value="entry"/>
+	<input type="hidden" name="m" value="ewei_shopv2"/>
+	<input type="hidden" name="do" value="web"/>
+	<input type="hidden" name="r" value="gonghuo.bid"/>
+	<div class="page-toolbar">
+		<div class="input-group col-sm-6 pull-right">                
+			<input type="text" class="form-control " name="title" value="{$_GPC['title']}" placeholder="商品名称">
+			<span class="input-group-btn">
+				<button class="btn btn-primary" type="submit"> 搜索</button>
+				<!-- <button type="submit" name="export" value="1" class="btn btn-success ">导出</button> -->
+			</span>
+		</div>
+	</div>
+</form>    
+{if empty($list)}        
+<div class="panel panel-default">
+  <div class="panel-body empty-data">未查询到相关数据</div>        
+</div>    
+{else}        
+<div class="row">            
+<div class="col-md-12">                          
+	<table class="table table-responsive">                    
+	<thead>                    
+	<tr>
+	<!-- <th style="width:25px;"></th> -->
+	<th style="">商品名称</th>
+	<th style="">商品现价</th>
+	<th style="">商品状态</th>
+	<th style="">创建时间</th>
+	<!-- <th style="">修改时间</th> -->
+	<th style="width: 125px;text-align:center;">操作</th>                    
+	</tr>
+	</thead>
+		<tbody>
+		{loop $list $row}                        
+		<tr>       
+			<td style="overflow: visible">
+				<span>{php echo $row['title'];}</span>                           
+			</td>
+			<td>
+				<span>{php echo $row['marketprice']}</span>                          
+			</td>
+			<td>
+				<span>{php echo $row['status']}</span>                          
+			</td> 
+			<td>
+				<span style="text-align: center;">
+				{php echo date('Y-m-d',$row['createtime'])}
+				  <br/>
+				{php echo date('H:i:s',$row['createtime'])}
+				</span>                          
+			</td> 
+			<!-- <td>
+				<span>
+				{php echo date('Y-m-d',$row['updatetime'])}
+				  <br/>
+				{php echo date('H:i:s',$row['updatetime'])}
+				</span>               
+			</td>  -->   
+
+			<td style="overflow:visible;text-align: center;">                                
+				<div class="btn-group">                                        
+					<a class="btn  btn-op btn-operation" href="{php echo webUrl('statistics/sale_pricelog/detail',array('id' => $row['id']));}" title="">
+					<span data-toggle="tooltip" data-placement="top" title="" data-original-title="详情">
+						<i class='icow icow-chakan2'></i>
+					</span>
+					</a>
+				</div>
+			</td>
+		</tr>
+		{/loop}
+		</tbody>                    
+		<tfoot>                    
+			<tr>
+				<td colspan="5" style="text-align:right">{$pager}                        
+				</td>                    
+			</tr>                    
+		</tfoot>                
+	</table>            
+	</div>        
+</div>    
+{/if}
+</div>
+<script type="text/javascript">
+
+$(document).on("click", '[data-toggle="ajaxEdit2"]',
+
+        function (e) {
+
+            var _this = $(this)
+
+            $(this).addClass('hidden')
+
+            var obj = $(this).parent().find('a'),
+
+                url = obj.data('href') || obj.attr('href'),
+
+                data = obj.data('set') || {},
+
+                html = $.trim(obj.text()),
+
+                required = obj.data('required') || true,
+
+                edit = obj.data('edit') || 'input';
+
+            var oldval = $.trim($(this).text());
+
+            e.preventDefault();
+
+
+
+            submit = function () {
+
+                e.preventDefault();
+
+                var val = $.trim(input.val());
+
+                if (required) {
+
+                    if (val == '') {
+
+                        tip.msgbox.err(tip.lang.empty);
+
+                        return;
+
+                    }
+
+                }
+
+                if (val == html) {
+
+                    input.remove(), obj.html(val).show();
+
+                    //obj.closest('tr').find('.icow').css({visibility:'visible'})
+
+                    return;
+
+                }
+
+                if (url) {
+
+                    $.post(url, {
+
+                        value: val
+
+                    }, function (ret) {
+
+                        ret = eval("(" + ret + ")");
+
+                        if (ret.status == 1) {
+
+                            obj.html(val).show();
+
+                        } else {
+
+                            tip.msgbox.err(ret.result.message, ret.result.url);
+
+                        }
+
+                        input.remove();
+
+                    }).fail(function () {
+
+                        input.remove(), tip.msgbox.err(tip.lang.exception);
+
+                    });
+
+                } else {
+
+                    input.remove();
+
+                    obj.html(val).show();
+
+                }
+
+                obj.trigger('valueChange', [val, oldval]);
+
+            },
+
+            obj.hide().html('<i class="fa fa-spinner fa-spin"></i>');
+
+            var input = $('<input type="text" class="form-control input-sm" style="width: 80%;display: inline;" />');
+
+            if (edit == 'textarea') {
+
+                input = $('<textarea type="text" class="form-control" style="resize:none;" rows=3 width="100%" ></textarea>');
+
+            }
+
+            obj.after(input);
+
+            input.val(html).select().blur(function () {
+
+                submit(input);
+
+                _this.removeClass('hidden')
+
+            }).keypress(function (e) {
+
+                if (e.which == 13) {
+
+                    submit(input);
+
+                    _this.removeClass('hidden')
+
+                }
+            });
+        })
+
+</script>
+
+{template '_footer'}

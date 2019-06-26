@@ -1,0 +1,97 @@
+<?php defined('IN_IA') or exit('Access Denied');?><!DOCTYPE html>
+
+<html lang="zh-cn">
+
+<head>
+
+<title><?php  echo $printer_title;?>  - 打印</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script src="./resource/js/lib/jquery-1.11.1.min.js"></script>
+
+<style type="text/css">
+
+    html,body,div,p{ font-family:"SimSun","宋体","Arial Narrow"; margin:0;padding:0;color:#000;}
+
+	/* 商品标签 */
+
+	.ogoodsbox{ font-size:12px; }
+
+	.ogoodsbox p{ margin-bottom: 2px; }
+
+	.ogoodsbox p.til{ text-align: center; margin-top: 5px; }
+
+	/* 订单 */
+
+	.orderbox{ font-size: 14px; padding: 10px; }
+
+	.orderbox p{ margin-bottom: 2px; line-height: 24px; }
+
+	.orderbox p.til{ text-align: center; margin-top: 5px; font-size: 18px; }
+
+	.orderbox .impcon{ font-size: 16px; font-weight: bold; }
+
+	.orderbox .fright{ float: right; }
+
+	.orderbox .tright{ text-align: right; }
+
+	.orderbox table{ width: 100%; text-align: right; font-size: 12px; border-right:1px solid #ccc;border-bottom:1px solid #ccc; }
+
+	.orderbox table th{ padding: 5px; border-left:1px solid #ccc;border-top:1px solid #ccc; }
+
+	.orderbox table td{ padding: 5px; border-left:1px solid #ccc;border-top:1px solid #ccc; }
+
+	.orderbox .ordertol{ font-size: 14px; }
+
+	.orderbox .ordertol a{ display: inline-block; text-decoration:none;  width: 30%; color: #000; }
+
+</style>
+
+</head>
+
+<body>
+
+<!--startprint-->
+
+<?php  if(is_array($list)) { foreach($list as $vo) { ?>
+
+<div class="orderbox" style="page-break-after:always">
+	<!-- <p><strong class="impcon">单号:<?php  echo $vo['ordersn'];?></strong></p> -->
+	<p><?php  echo $vo['goods_name'];?> <?php  echo $vo['fendan'];?></p>
+	<!-- <p>收货人:<?php  echo $vo['arealname'];?></p>
+	<p>联系方式:<?php  echo $vo['amobile'];?></p>
+	<p>收货地址:<?php  echo $vo['aprovince'];?><?php  echo $vo['acity'];?><?php  echo $vo['aarea'];?><?php  echo $vo['astreet'];?><?php  echo $vo['aaddress'];?></p> -->
+	<hr />
+</div>
+
+<?php  } } ?>
+
+<!--endprint-->
+
+
+<script language='javascript'>
+
+	$(function(){
+
+		bdhtml=window.document.body.innerHTML; 
+
+		sprnstr="<!--startprint-->"; 
+
+		eprnstr="<!--endprint-->"; 
+
+		prnhtml=bdhtml.substr(bdhtml.indexOf(sprnstr)+17); 
+
+		prnhtml=prnhtml.substring(0,prnhtml.indexOf(eprnstr)); 
+
+		window.document.body.innerHTML=prnhtml; 
+
+		window.print();
+
+	});
+
+</script>
+
+</body>
+
+</html>
